@@ -3,24 +3,337 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>An Go Minecraft</title>
+
+  <title>An Go Minecraft Server</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background:
+        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
+        url("https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=1920&q=80");
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed;
+      color: white;
+    }
+
+    nav {
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8%;
+      background: rgba(0,0,0,.75);
+      backdrop-filter: blur(10px);
+    }
+
+    nav h2 {
+      color: #65ff65;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 25px;
+    }
+
+    nav a:hover {
+      color: #65ff65;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 30px;
+    }
+
+    .hero-content {
+      max-width: 850px;
+    }
+
+    .hero h1 {
+      font-size: 60px;
+      margin-bottom: 15px;
+      text-shadow: 0 4px 15px black;
+    }
+
+    .hero p {
+      font-size: 21px;
+      color: #ddd;
+      margin-bottom: 35px;
+    }
+
+    .server-box {
+      background: rgba(10,10,10,.75);
+      border: 1px solid rgba(255,255,255,.15);
+      border-radius: 18px;
+      padding: 25px;
+      backdrop-filter: blur(15px);
+      display: inline-block;
+      min-width: 340px;
+    }
+
+    .server-box h3 {
+      margin-bottom: 15px;
+    }
+
+    .ip {
+      background: #111;
+      border-radius: 10px;
+      padding: 15px 20px;
+      font-size: 20px;
+      color: #62ff62;
+      margin-bottom: 15px;
+    }
+
+    button {
+      border: none;
+      border-radius: 10px;
+      padding: 13px 25px;
+      font-size: 16px;
+      cursor: pointer;
+      background: #45c945;
+      color: white;
+      font-weight: bold;
+      transition: .2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      background: #55df55;
+    }
+
+    .status {
+      margin-top: 17px;
+      font-size: 15px;
+    }
+
+    .dot {
+      height: 10px;
+      width: 10px;
+      background: #4cff4c;
+      display: inline-block;
+      border-radius: 50%;
+      margin-right: 5px;
+    }
+
+    section {
+      padding: 80px 10%;
+      background: #101010;
+    }
+
+    section:nth-child(even) {
+      background: #171717;
+    }
+
+    section h2 {
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 35px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 20px;
+    }
+
+    .card {
+      background: #222;
+      padding: 25px;
+      border-radius: 15px;
+      border: 1px solid #333;
+    }
+
+    .card h3 {
+      color: #65ff65;
+      margin-bottom: 10px;
+    }
+
+    .rules {
+      max-width: 750px;
+      margin: auto;
+      line-height: 2;
+      color: #ddd;
+    }
+
+    .discord {
+      text-align: center;
+    }
+
+    .discord a {
+      display: inline-block;
+      margin-top: 20px;
+      background: #5865F2;
+      color: white;
+      padding: 14px 30px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      text-align: center;
+      background: #080808;
+      color: #888;
+      padding: 25px;
+    }
+
+    @media(max-width: 600px) {
+      .hero h1 {
+        font-size: 39px;
+      }
+
+      nav div {
+        display: none;
+      }
+
+      .server-box {
+        min-width: auto;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
-  <h1>An Go Minecraft Server</h1>
 
-  <p>Chào mừng đến với server Minecraft của chúng tôi!</p>
+<nav>
+  <h2>⛏ AN GO</h2>
 
-  <h2>Địa chỉ server</h2>
-  <p>play.angffyt.io.vn</p>
+  <div>
+    <a href="#about">Giới thiệu</a>
+    <a href="#rules">Luật</a>
+    <a href="#discord">Discord</a>
+  </div>
+</nav>
 
-  <button onclick="copyIP()">Copy IP</button>
+<div class="hero">
 
-  <script>
-    function copyIP() {
-      navigator.clipboard.writeText("play.angffyt.io.vn");
-      alert("Đã copy IP server!");
-    }
-  </script>
+  <div class="hero-content">
+
+    <h1>AN GO MINECRAFT</h1>
+
+    <p>
+      Sinh tồn • Chơi cùng bạn bè • Minecraft Java
+    </p>
+
+    <div class="server-box">
+
+      <h3>🎮 IP SERVER</h3>
+
+      <div class="ip" id="serverIP">
+        play.angffyt.io.vn
+      </div>
+
+      <button onclick="copyIP()">
+        📋 COPY IP
+      </button>
+
+      <div class="status">
+        <span class="dot"></span>
+        Server Minecraft
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+
+<section id="about">
+
+  <h2>Giới thiệu server</h2>
+
+  <div class="cards">
+
+    <div class="card">
+      <h3>🌍 Survival</h3>
+      <p>
+        Thế giới sinh tồn để xây nhà, khám phá và chơi cùng bạn bè.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>⚡ PaperMC</h3>
+      <p>
+        Server sử dụng PaperMC để có hiệu năng tốt và hỗ trợ plugin.
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>👥 Multiplayer</h3>
+      <p>
+        Mời bạn bè tham gia và cùng xây dựng thế giới của riêng bạn.
+      </p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="rules">
+
+  <h2>📜 Luật server</h2>
+
+  <div class="rules">
+
+    <p>1. Không sử dụng hack hoặc cheat.</p>
+    <p>2. Không phá công trình của người chơi khác.</p>
+    <p>3. Không spam hoặc xúc phạm người chơi.</p>
+    <p>4. Không lợi dụng bug của server.</p>
+    <p>5. Vui vẻ và tôn trọng mọi người.</p>
+
+  </div>
+
+</section>
+
+
+<section id="discord">
+
+  <div class="discord">
+
+    <h2>💬 Cộng đồng Discord</h2>
+
+    <p>Tham gia Discord để trò chuyện và nhận thông báo về server.</p>
+
+    <a href="#" target="_blank">
+      Tham gia Discord
+    </a>
+
+  </div>
+
+</section>
+
+
+<footer>
+  © 2026 An Go Minecraft Server
+</footer>
+
+
+<script>
+
+function copyIP() {
+
+  const ip = "play.angffyt.io.vn";
+
+  navigator.clipboard.writeText(ip);
+
+  alert("Đã copy IP: " + ip);
+}
+
+</script>
+
 </body>
 </html>
