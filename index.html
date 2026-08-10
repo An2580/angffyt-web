@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,25 +14,32 @@
       padding: 0;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: Arial, sans-serif;
-      background:
-        linear-gradient(rgba(0,0,0,.55), rgba(0,0,0,.75)),
-        url("https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=1920&q=80");
-      background-size: cover;
-      background-position: center;
-      background-attachment: fixed;
+      background: #101010;
       color: white;
     }
+
+    /* NAV */
 
     nav {
       height: 70px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+
       padding: 0 8%;
-      background: rgba(0,0,0,.75);
-      backdrop-filter: blur(10px);
+
+      background: rgba(0, 0, 0, 0.9);
+
+      position: sticky;
+      top: 0;
+
+      z-index: 100;
     }
 
     nav h2 {
@@ -42,19 +50,36 @@
       color: white;
       text-decoration: none;
       margin-left: 25px;
+
+      transition: 0.2s;
     }
 
     nav a:hover {
       color: #65ff65;
     }
 
+    /* HERO */
+
     .hero {
       min-height: 90vh;
+
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
+
       text-align: center;
-      padding: 30px;
+
+      padding: 40px 20px;
+
+      background:
+        linear-gradient(
+          rgba(0,0,0,.55),
+          rgba(0,0,0,.85)
+        ),
+        url("https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=1920&q=80");
+
+      background-size: cover;
+      background-position: center;
     }
 
     .hero-content {
@@ -63,135 +88,292 @@
 
     .hero h1 {
       font-size: 60px;
+
       margin-bottom: 15px;
-      text-shadow: 0 4px 15px black;
+
+      text-shadow: 0 5px 20px black;
     }
 
-    .hero p {
-      font-size: 21px;
+    .hero-description {
+      font-size: 20px;
+
       color: #ddd;
+
       margin-bottom: 35px;
     }
 
+    /* SERVER CARD */
+
     .server-box {
-      background: rgba(10,10,10,.75);
+      width: 420px;
+      max-width: 100%;
+
+      margin: auto;
+
+      padding: 30px;
+
+      border-radius: 20px;
+
+      background: rgba(10,10,10,.88);
+
       border: 1px solid rgba(255,255,255,.15);
-      border-radius: 18px;
-      padding: 25px;
-      backdrop-filter: blur(15px);
-      display: inline-block;
-      min-width: 340px;
+
+      box-shadow: 0 15px 50px rgba(0,0,0,.5);
     }
 
     .server-box h3 {
-      margin-bottom: 15px;
+      margin-bottom: 18px;
+
+      font-size: 22px;
     }
 
     .ip {
-      background: #111;
-      border-radius: 10px;
-      padding: 15px 20px;
-      font-size: 20px;
-      color: #62ff62;
+      padding: 16px 20px;
+
       margin-bottom: 15px;
+
+      border-radius: 10px;
+
+      background: #111;
+
+      color: #65ff65;
+
+      font-size: 20px;
+
+      word-break: break-all;
+
+      border: 1px solid #292929;
     }
+
+    /* BUTTON */
 
     button {
       border: none;
+
       border-radius: 10px;
-      padding: 13px 25px;
-      font-size: 16px;
-      cursor: pointer;
-      background: #45c945;
+
+      padding: 14px 28px;
+
+      background: #38b638;
+
       color: white;
+
+      font-size: 16px;
+
       font-weight: bold;
+
+      cursor: pointer;
+
       transition: .2s;
     }
 
     button:hover {
       transform: scale(1.05);
-      background: #55df55;
+
+      background: #4bd14b;
     }
 
-    .status {
-      margin-top: 17px;
+    /* STATUS */
+
+    .server-status-box {
+      margin-top: 22px;
+
+      background: #181818;
+
+      border-radius: 12px;
+
+      padding: 17px;
+
+      border: 1px solid #303030;
+    }
+
+    .status-line {
+      display: flex;
+
+      align-items: center;
+      justify-content: center;
+
+      gap: 8px;
+
+      font-size: 17px;
+
+      font-weight: bold;
+    }
+
+    .status-dot {
+      width: 12px;
+      height: 12px;
+
+      border-radius: 50%;
+
+      background: #888;
+
+      box-shadow: 0 0 8px #888;
+    }
+
+    .players {
+      margin-top: 10px;
+
+      color: #ddd;
+
       font-size: 15px;
     }
 
-    .dot {
-      height: 10px;
-      width: 10px;
-      background: #4cff4c;
-      display: inline-block;
-      border-radius: 50%;
-      margin-right: 5px;
+    .version {
+      margin-top: 6px;
+
+      color: #aaa;
+
+      font-size: 14px;
     }
+
+    /* SECTIONS */
 
     section {
       padding: 80px 10%;
-      background: #101010;
     }
 
-    section:nth-child(even) {
+    section:nth-of-type(even) {
       background: #171717;
+    }
+
+    section:nth-of-type(odd) {
+      background: #101010;
     }
 
     section h2 {
       text-align: center;
+
       font-size: 36px;
-      margin-bottom: 35px;
+
+      margin-bottom: 40px;
     }
+
+    /* CARDS */
 
     .cards {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
       gap: 20px;
     }
 
     .card {
       background: #222;
-      padding: 25px;
-      border-radius: 15px;
+
+      padding: 28px;
+
+      border-radius: 16px;
+
       border: 1px solid #333;
+
+      transition: .2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+
+      border-color: #55c955;
     }
 
     .card h3 {
       color: #65ff65;
-      margin-bottom: 10px;
+
+      margin-bottom: 12px;
     }
+
+    .card p {
+      color: #ccc;
+
+      line-height: 1.6;
+    }
+
+    /* RULES */
 
     .rules {
       max-width: 750px;
+
       margin: auto;
-      line-height: 2;
-      color: #ddd;
+
+      background: #202020;
+
+      padding: 30px;
+
+      border-radius: 16px;
+
+      border: 1px solid #333;
     }
+
+    .rules p {
+      padding: 10px 0;
+
+      color: #ddd;
+
+      border-bottom: 1px solid #333;
+    }
+
+    .rules p:last-child {
+      border-bottom: none;
+    }
+
+    /* DISCORD */
 
     .discord {
       text-align: center;
     }
 
+    .discord p {
+      color: #ccc;
+    }
+
     .discord a {
       display: inline-block;
-      margin-top: 20px;
-      background: #5865F2;
-      color: white;
-      padding: 14px 30px;
+
+      margin-top: 25px;
+
+      padding: 15px 30px;
+
       border-radius: 10px;
+
+      background: #5865F2;
+
+      color: white;
+
       text-decoration: none;
+
       font-weight: bold;
+
+      transition: .2s;
     }
+
+    .discord a:hover {
+      transform: scale(1.05);
+    }
+
+    /* FOOTER */
 
     footer {
+      padding: 30px;
+
       text-align: center;
+
       background: #080808;
-      color: #888;
-      padding: 25px;
+
+      color: #777;
     }
 
-    @media(max-width: 600px) {
+    /* MOBILE */
+
+    @media(max-width: 650px) {
+
       .hero h1 {
-        font-size: 39px;
+        font-size: 40px;
+      }
+
+      .hero-description {
+        font-size: 17px;
       }
 
       nav div {
@@ -199,8 +381,11 @@
       }
 
       .server-box {
-        min-width: auto;
         width: 100%;
+      }
+
+      section {
+        padding: 60px 20px;
       }
     }
   </style>
@@ -208,132 +393,391 @@
 
 <body>
 
-<nav>
-  <h2>⛏ AN GO</h2>
+  <!-- NAV -->
 
-  <div>
-    <a href="#about">Giới thiệu</a>
-    <a href="#rules">Luật</a>
-    <a href="#discord">Discord</a>
-  </div>
-</nav>
+  <nav>
 
-<div class="hero">
+    <h2>⛏ AN GO</h2>
 
-  <div class="hero-content">
+    <div>
+      <a href="#about">Giới thiệu</a>
+      <a href="#rules">Luật</a>
+      <a href="#discord">Discord</a>
+    </div>
 
-    <h1>AN GO MINECRAFT</h1>
+  </nav>
 
-    <p>
-      Sinh tồn • Chơi cùng bạn bè • Minecraft Java
-    </p>
 
-    <div class="server-box">
+  <!-- HERO -->
 
-      <h3>🎮 IP SERVER</h3>
+  <div class="hero">
 
-      <div class="ip" id="serverIP">
-        play.angffyt.io.vn
+    <div class="hero-content">
+
+      <h1>AN GO MINECRAFT</h1>
+
+      <p class="hero-description">
+        Survival • Multiplayer • Minecraft Java
+      </p>
+
+
+      <div class="server-box">
+
+        <h3>🎮 IP SERVER</h3>
+
+
+        <div
+          class="ip"
+          id="serverIP"
+        >
+          play.angffyt.io.vn
+        </div>
+
+
+        <button onclick="copyIP()">
+
+          📋 COPY IP
+
+        </button>
+
+
+        <!-- SERVER STATUS -->
+
+        <div class="server-status-box">
+
+          <div class="status-line">
+
+            <span
+              class="status-dot"
+              id="statusDot"
+            ></span>
+
+            <span id="serverStatus">
+
+              Đang kiểm tra server...
+
+            </span>
+
+          </div>
+
+
+          <div
+            class="players"
+            id="playerCount"
+          >
+
+            👥 Người chơi: ...
+
+          </div>
+
+
+          <div
+            class="version"
+            id="serverVersion"
+          >
+
+            Minecraft: ...
+
+          </div>
+
+        </div>
+
       </div>
 
-      <button onclick="copyIP()">
-        📋 COPY IP
-      </button>
+    </div>
 
-      <div class="status">
-        <span class="dot"></span>
-        Server Minecraft
+  </div>
+
+
+  <!-- ABOUT -->
+
+  <section id="about">
+
+    <h2>🌍 Giới thiệu server</h2>
+
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>🌲 Survival</h3>
+
+        <p>
+          Sinh tồn, xây dựng, khám phá
+          và chơi cùng bạn bè.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>⚡ PaperMC</h3>
+
+        <p>
+          Server sử dụng PaperMC
+          để có hiệu năng tốt
+          và hỗ trợ plugin.
+        </p>
+
+      </div>
+
+
+      <div class="card">
+
+        <h3>👥 Multiplayer</h3>
+
+        <p>
+          Mời bạn bè vào server
+          và cùng xây dựng
+          thế giới Minecraft.
+        </p>
+
       </div>
 
     </div>
 
-  </div>
-</div>
+  </section>
 
 
-<section id="about">
+  <!-- RULES -->
 
-  <h2>Giới thiệu server</h2>
+  <section id="rules">
 
-  <div class="cards">
+    <h2>📜 Luật server</h2>
 
-    <div class="card">
-      <h3>🌍 Survival</h3>
+
+    <div class="rules">
+
       <p>
-        Thế giới sinh tồn để xây nhà, khám phá và chơi cùng bạn bè.
+        1. Không sử dụng hack hoặc cheat.
       </p>
+
+      <p>
+        2. Không phá công trình của người khác.
+      </p>
+
+      <p>
+        3. Không spam hoặc xúc phạm người chơi.
+      </p>
+
+      <p>
+        4. Không lợi dụng bug của server.
+      </p>
+
+      <p>
+        5. Tôn trọng tất cả người chơi.
+      </p>
+
     </div>
 
-    <div class="card">
-      <h3>⚡ PaperMC</h3>
+  </section>
+
+
+  <!-- DISCORD -->
+
+  <section id="discord">
+
+    <div class="discord">
+
+      <h2>💬 Discord</h2>
+
       <p>
-        Server sử dụng PaperMC để có hiệu năng tốt và hỗ trợ plugin.
+        Tham gia Discord để trò chuyện
+        và nhận thông báo về server.
       </p>
+
+
+      <a
+        href="#"
+        target="_blank"
+      >
+        Tham gia Discord
+      </a>
+
     </div>
 
-    <div class="card">
-      <h3>👥 Multiplayer</h3>
-      <p>
-        Mời bạn bè tham gia và cùng xây dựng thế giới của riêng bạn.
-      </p>
-    </div>
-
-  </div>
-
-</section>
+  </section>
 
 
-<section id="rules">
+  <!-- FOOTER -->
 
-  <h2>📜 Luật server</h2>
+  <footer>
 
-  <div class="rules">
+    © 2026 An Go Minecraft Server
+    <br><br>
 
-    <p>1. Không sử dụng hack hoặc cheat.</p>
-    <p>2. Không phá công trình của người chơi khác.</p>
-    <p>3. Không spam hoặc xúc phạm người chơi.</p>
-    <p>4. Không lợi dụng bug của server.</p>
-    <p>5. Vui vẻ và tôn trọng mọi người.</p>
+    play.angffyt.io.vn
 
-  </div>
-
-</section>
+  </footer>
 
 
-<section id="discord">
+  <!-- JAVASCRIPT -->
 
-  <div class="discord">
+  <script>
 
-    <h2>💬 Cộng đồng Discord</h2>
-
-    <p>Tham gia Discord để trò chuyện và nhận thông báo về server.</p>
-
-    <a href="#" target="_blank">
-      Tham gia Discord
-    </a>
-
-  </div>
-
-</section>
+    const serverIP =
+      "play.angffyt.io.vn";
 
 
-<footer>
-  © 2026 An Go Minecraft Server
-</footer>
+    /* COPY IP */
+
+    function copyIP() {
+
+      navigator.clipboard
+        .writeText(serverIP);
+
+      alert(
+        "Đã copy IP: " + serverIP
+      );
+
+    }
 
 
-<script>
+    /* CHECK SERVER */
 
-function copyIP() {
+    async function checkServer() {
 
-  const ip = "play.angffyt.io.vn";
+      const status =
+        document.getElementById(
+          "serverStatus"
+        );
 
-  navigator.clipboard.writeText(ip);
+      const dot =
+        document.getElementById(
+          "statusDot"
+        );
 
-  alert("Đã copy IP: " + ip);
-}
+      const players =
+        document.getElementById(
+          "playerCount"
+        );
 
-</script>
+      const version =
+        document.getElementById(
+          "serverVersion"
+        );
+
+
+      try {
+
+        const response =
+          await fetch(
+            "https://api.mcsrvstat.us/3/"
+            + serverIP
+            + "?t="
+            + Date.now()
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if (data.online) {
+
+          status.textContent =
+            "Server đang ONLINE";
+
+          status.style.color =
+            "#63ff63";
+
+
+          dot.style.background =
+            "#4cff4c";
+
+          dot.style.boxShadow =
+            "0 0 10px #4cff4c";
+
+
+          if (data.players) {
+
+            players.textContent =
+              "👥 Người chơi: "
+              + data.players.online
+              + " / "
+              + data.players.max;
+
+          }
+
+
+          if (data.version) {
+
+            version.textContent =
+              "🎮 Phiên bản: "
+              + data.version;
+
+          }
+
+        }
+
+        else {
+
+          status.textContent =
+            "Server đang OFFLINE";
+
+          status.style.color =
+            "#ff5555";
+
+
+          dot.style.background =
+            "#ff4444";
+
+          dot.style.boxShadow =
+            "0 0 10px #ff4444";
+
+
+          players.textContent =
+            "👥 Người chơi: 0";
+
+
+          version.textContent =
+            "Server hiện không hoạt động";
+
+        }
+
+      }
+
+      catch (error) {
+
+        status.textContent =
+          "Không kiểm tra được server";
+
+        status.style.color =
+          "#ffaa33";
+
+
+        dot.style.background =
+          "#ffaa33";
+
+        dot.style.boxShadow =
+          "0 0 10px #ffaa33";
+
+
+        players.textContent =
+          "Thử lại sau";
+
+        version.textContent = "";
+
+      }
+
+    }
+
+
+    /* CHECK WHEN PAGE OPENS */
+
+    checkServer();
+
+
+    /* CHECK EVERY 60 SECONDS */
+
+    setInterval(
+      checkServer,
+      60000
+    );
+
+  </script>
 
 </body>
+
 </html>
