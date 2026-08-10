@@ -1,420 +1,585 @@
-import { connect } from "cloudflare:sockets";
+<!DOCTYPE html>
+<html lang="vi">
 
-const MC_HOST = "atoms-mobiles.tun.ply.gg";
-const MC_PORT = 57014;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-export default {
-  async fetch(request) {
-    const corsHeaders = {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Access-Control-Allow-Headers": "*",
-      "Content-Type": "application/json; charset=UTF-8",
-      "Cache-Control": "no-store"
-    };
+  <title>An Go Minecraft Server</title>
 
-    if (request.method === "OPTIONS") {
-      return new Response(null, {
-        status: 204,
-        headers: corsHeaders
-      });
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    try {
-      const result = await pingMinecraft();
-
-      return new Response(
-        JSON.stringify({
-          online: true,
-          players: result.players?.online ?? 0,
-          max: result.players?.max ?? 0,
-          version: result.version?.name ?? "Minecraft",
-          protocol: result.version?.protocol ?? null,
-          motd: getMotd(result.description)
-        }),
-        {
-          status: 200,
-          headers: corsHeaders
-        }
-      );
-    } catch (error) {
-      return new Response(
-        JSON.stringify({
-          online: false,
-          players: 0,
-          max: 0,
-          error: String(error.message || error)
-        }),
-        {
-          status: 200,
-          headers: corsHeaders
-        }
-      );
+    body {
+      font-family: Arial, sans-serif;
+      background: #101010;
+      color: white;
     }
-  }
-};
 
-async function pingMinecraft() {
-  const socket = connect({
-    hostname: MC_HOST,
-    port: MC_PORT
-  });
+    nav {
+      height: 70px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 8%;
+      background: #090909;
+    }
 
-  const writer = socket.writable.getWriter();
+    nav h2 {
+      color: #55ff55;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+    }
+
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 30px 20px;
+
+      background:
+        linear-gradient(
+          rgba(0,0,0,.55),
+          rgba(0,0,0,.85)
+        ),
+        url("https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=1920&q=80");
+
+      background-size: cover;
+      background-position: center;
+    }
+
+    .hero h1 {
+      font-size: 55px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #ddd;
+      font-size: 19px;
+      margin-bottom: 30px;
+    }
+
+    .server-box {
+      width: 430px;
+      max-width: 100%;
+      margin: auto;
+
+      background: rgba(10,10,10,.92);
+
+      padding: 30px;
+
+      border-radius: 20px;
+
+      border: 1px solid #333;
+    }
+
+    .server-box h2 {
+      margin-bottom: 18px;
+    }
+
+    .ip {
+      padding: 15px;
+
+      border-radius: 10px;
+
+      background: #111;
+
+      border: 1px solid #333;
+
+      color: #54ff54;
+
+      font-size: 19px;
+
+      margin-bottom: 15px;
+    }
+
+    button {
+      border: none;
+
+      padding: 14px 25px;
+
+      border-radius: 10px;
+
+      background: #35be3b;
+
+      color: white;
+
+      font-weight: bold;
+
+      cursor: pointer;
+
+      font-size: 15px;
+    }
+
+    button:hover {
+      background: #48d34e;
+    }
+
+    .status-box {
+      margin-top: 22px;
+
+      padding: 20px;
+
+      border-radius: 12px;
+
+      background: #181818;
+
+      border: 1px solid #333;
+    }
+
+    .status {
+      display: flex;
+
+      justify-content: center;
+      align-items: center;
+
+      gap: 8px;
+
+      font-weight: bold;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+
+      border-radius: 50%;
+
+      background: orange;
+    }
+
+    #players {
+      margin-top: 10px;
+      color: #ddd;
+    }
+
+    #version {
+      margin-top: 7px;
+      color: #aaa;
+    }
+
+    section {
+      padding: 70px 10%;
+    }
+
+    section h2 {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    .cards {
+      display: grid;
+
+      grid-template-columns:
+        repeat(auto-fit, minmax(220px,1fr));
+
+      gap: 20px;
+    }
+
+    .card {
+      padding: 25px;
+
+      background: #1d1d1d;
+
+      border-radius: 15px;
+
+      border: 1px solid #333;
+    }
+
+    .card h3 {
+      color: #55ff55;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+
+      padding: 30px;
+
+      background: #080808;
+
+      color: #777;
+    }
+
+    @media(max-width:600px) {
+
+      .hero h1 {
+        font-size: 38px;
+      }
+
+      nav div {
+        display: none;
+      }
+    }
+
+  </style>
+</head>
+
+
+<body>
+
+
+<nav>
+
+  <h2>⛏ AN GO</h2>
+
+  <div>
+    <a href="#about">Giới thiệu</a>
+    <a href="#rules">Luật</a>
+  </div>
+
+</nav>
+
+
+<div class="hero">
+
+  <div>
+
+    <h1>AN GO MINECRAFT</h1>
+
+    <div class="subtitle">
+      Survival • Multiplayer • Minecraft Java
+    </div>
+
+
+    <div class="server-box">
+
+      <h2>🎮 IP SERVER</h2>
+
+
+      <div class="ip">
+        play.angffyt.io.vn
+      </div>
+
+
+      <button onclick="copyIP()">
+        📋 COPY IP
+      </button>
+
+
+      <div class="status-box">
+
+        <div class="status">
+
+          <span
+            class="dot"
+            id="dot">
+          </span>
+
+          <span id="status">
+            Đang kiểm tra server...
+          </span>
+
+        </div>
+
+
+        <div id="players">
+          👥 Người chơi: ...
+        </div>
+
+
+        <div id="version">
+          🎮 Phiên bản: ...
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<section id="about">
+
+  <h2>🌍 Giới thiệu server</h2>
+
+
+  <div class="cards">
+
+    <div class="card">
+
+      <h3>🌲 Survival</h3>
+
+      <p>
+        Sinh tồn, xây dựng và khám phá
+        cùng bạn bè.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>⚡ PaperMC</h3>
+
+      <p>
+        Server sử dụng PaperMC
+        và hỗ trợ plugin.
+      </p>
+
+    </div>
+
+
+    <div class="card">
+
+      <h3>👥 Multiplayer</h3>
+
+      <p>
+        Tham gia server
+        bằng play.angffyt.io.vn
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<section id="rules">
+
+  <h2>📜 Luật server</h2>
+
+
+  <div class="cards">
+
+    <div class="card">
+
+      <p>
+        ❌ Không hack / cheat
+      </p>
+
+      <br>
+
+      <p>
+        ❌ Không phá công trình
+        của người khác
+      </p>
+
+      <br>
+
+      <p>
+        ❌ Không spam
+      </p>
+
+      <br>
+
+      <p>
+        ✅ Tôn trọng người chơi
+      </p>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<footer>
+
+  © 2026 An Go Minecraft Server
+
+  <br><br>
+
+  play.angffyt.io.vn
+
+</footer>
+
+
+<script>
+
+const SERVER_IP =
+  "play.angffyt.io.vn";
+
+
+/*
+=================================================
+
+QUAN TRỌNG
+
+Bạn phải thay URL dưới đây
+bằng URL Cloudflare Worker của bạn.
+
+Ví dụ:
+
+https://angffyt-web.abc123.workers.dev
+
+=================================================
+*/
+
+const WORKER_URL =
+  "DAN_LINK_WORKER_CUA_BAN_VAO_DAY";
+
+
+function copyIP() {
+
+  navigator.clipboard.writeText(
+    SERVER_IP
+  );
+
+  alert(
+    "Đã copy IP: " + SERVER_IP
+  );
+
+}
+
+
+async function checkServer() {
+
+  const status =
+    document.getElementById("status");
+
+  const dot =
+    document.getElementById("dot");
+
+  const players =
+    document.getElementById("players");
+
+  const version =
+    document.getElementById("version");
+
+
+  status.textContent =
+    "Đang kiểm tra server...";
+
+  status.style.color =
+    "white";
+
+  dot.style.background =
+    "orange";
+
 
   try {
-    /*
-      Minecraft Handshake
 
-      Packet ID = 0
-      Protocol Version = 767
-      Host = Playit hostname
-      Port = 57014
-      Next State = 1 (Status)
-    */
-
-    const hostBytes = new TextEncoder().encode(MC_HOST);
-
-    const handshakeData = concatBytes(
-      encodeVarInt(0),
-      encodeVarInt(767),
-      encodeVarInt(hostBytes.length),
-      hostBytes,
-      new Uint8Array([
-        (MC_PORT >> 8) & 0xff,
-        MC_PORT & 0xff
-      ]),
-      encodeVarInt(1)
-    );
-
-    const handshakePacket = concatBytes(
-      encodeVarInt(handshakeData.length),
-      handshakeData
-    );
-
-    /*
-      Status Request
-
-      Packet length = 1
-      Packet ID = 0
-    */
-
-    const statusRequest = new Uint8Array([
-      0x01,
-      0x00
-    ]);
-
-    await writer.write(handshakePacket);
-    await writer.write(statusRequest);
-
-  } finally {
-    writer.releaseLock();
-  }
-
-  /*
-    Đọc response
-  */
-
-  const reader = socket.readable.getReader();
-
-  const chunks = [];
-
-  let totalLength = 0;
-
-  const timeout = new Promise((_, reject) => {
-    setTimeout(() => {
-      reject(new Error("Minecraft server timeout"));
-    }, 7000);
-  });
-
-  const readServer = async () => {
-    while (true) {
-      const { value, done } = await reader.read();
-
-      if (done) {
-        break;
-      }
-
-      if (value) {
-        chunks.push(value);
-        totalLength += value.length;
-
-        /*
-          Khi đã nhận được packet hoàn chỉnh
-          thì parse ngay.
-        */
-
-        const combined = mergeChunks(
-          chunks,
-          totalLength
-        );
-
-        const parsed = tryParseStatus(combined);
-
-        if (parsed) {
-          try {
-            socket.close();
-          } catch {}
-
-          return parsed;
-        }
-      }
-    }
-
-    throw new Error(
-      "Server đóng kết nối trước khi gửi status"
-    );
-  };
-
-  return await Promise.race([
-    readServer(),
-    timeout
-  ]);
-}
-
-
-/*
-  Parse Minecraft Status Response
-*/
-
-function tryParseStatus(data) {
-  let offset = 0;
-
-  const packetLengthResult =
-    decodeVarInt(data, offset);
-
-  if (!packetLengthResult) {
-    return null;
-  }
-
-  const packetLength =
-    packetLengthResult.value;
-
-  offset =
-    packetLengthResult.offset;
-
-  /*
-    Chưa nhận đủ packet
-  */
-
-  if (
-    data.length - offset <
-    packetLength
-  ) {
-    return null;
-  }
-
-  /*
-    Packet ID
-  */
-
-  const packetIdResult =
-    decodeVarInt(data, offset);
-
-  if (!packetIdResult) {
-    return null;
-  }
-
-  const packetId =
-    packetIdResult.value;
-
-  offset =
-    packetIdResult.offset;
-
-  if (packetId !== 0) {
-    throw new Error(
-      "Minecraft trả packet ID không hợp lệ"
-    );
-  }
-
-  /*
-    JSON String Length
-  */
-
-  const jsonLengthResult =
-    decodeVarInt(data, offset);
-
-  if (!jsonLengthResult) {
-    return null;
-  }
-
-  const jsonLength =
-    jsonLengthResult.value;
-
-  offset =
-    jsonLengthResult.offset;
-
-  if (
-    data.length - offset <
-    jsonLength
-  ) {
-    return null;
-  }
-
-  const jsonBytes =
-    data.slice(
-      offset,
-      offset + jsonLength
-    );
-
-  const jsonText =
-    new TextDecoder().decode(
-      jsonBytes
-    );
-
-  return JSON.parse(jsonText);
-}
-
-
-/*
-  Minecraft VarInt Encode
-*/
-
-function encodeVarInt(value) {
-  const bytes = [];
-
-  value = value >>> 0;
-
-  do {
-    let temp =
-      value & 0x7f;
-
-    value >>>= 7;
-
-    if (value !== 0) {
-      temp |= 0x80;
-    }
-
-    bytes.push(temp);
-
-  } while (value !== 0);
-
-  return new Uint8Array(bytes);
-}
-
-
-/*
-  Minecraft VarInt Decode
-*/
-
-function decodeVarInt(data, start) {
-  let value = 0;
-  let position = 0;
-  let offset = start;
-
-  while (true) {
-    if (offset >= data.length) {
-      return null;
-    }
-
-    const current =
-      data[offset++];
-
-    value |=
-      (current & 0x7f)
-      << position;
-
-    if ((current & 0x80) === 0) {
-      return {
-        value,
-        offset
-      };
-    }
-
-    position += 7;
-
-    if (position >= 35) {
-      throw new Error(
-        "VarInt quá lớn"
+    const response =
+      await fetch(
+        WORKER_URL + "?t=" + Date.now()
       );
+
+
+    const data =
+      await response.json();
+
+
+    console.log(
+      "Minecraft status:",
+      data
+    );
+
+
+    if (data.online === true) {
+
+      status.textContent =
+        "Server đang ONLINE";
+
+      status.style.color =
+        "#55ff55";
+
+
+      dot.style.background =
+        "#55ff55";
+
+      dot.style.boxShadow =
+        "0 0 10px #55ff55";
+
+
+      players.textContent =
+        "👥 Người chơi: "
+        + data.players
+        + " / "
+        + data.max;
+
+
+      version.textContent =
+        "🎮 Phiên bản: "
+        + data.version;
+
     }
-  }
-}
+
+    else {
+
+      status.textContent =
+        "Server đang OFFLINE";
+
+      status.style.color =
+        "#ff5555";
 
 
-/*
-  Ghép nhiều Uint8Array
-*/
+      dot.style.background =
+        "#ff4444";
 
-function concatBytes(...arrays) {
-  let total = 0;
-
-  for (const array of arrays) {
-    total += array.length;
-  }
-
-  const result =
-    new Uint8Array(total);
-
-  let offset = 0;
-
-  for (const array of arrays) {
-    result.set(array, offset);
-
-    offset += array.length;
-  }
-
-  return result;
-}
+      dot.style.boxShadow =
+        "0 0 10px #ff4444";
 
 
-/*
-  Ghép chunks server trả về
-*/
-
-function mergeChunks(
-  chunks,
-  totalLength
-) {
-  const result =
-    new Uint8Array(totalLength);
-
-  let offset = 0;
-
-  for (const chunk of chunks) {
-    result.set(chunk, offset);
-
-    offset += chunk.length;
-  }
-
-  return result;
-}
+      players.textContent =
+        "👥 Người chơi: 0";
 
 
-/*
-  Chuyển MOTD thành text
-*/
+      version.textContent =
+        data.error
+        ? "Lỗi: " + data.error
+        : "Server hiện không hoạt động";
 
-function getMotd(description) {
-  if (!description) {
-    return "";
-  }
-
-  if (typeof description === "string") {
-    return description;
-  }
-
-  let text =
-    description.text || "";
-
-  if (
-    Array.isArray(description.extra)
-  ) {
-    for (
-      const part
-      of description.extra
-    ) {
-      if (
-        typeof part === "string"
-      ) {
-        text += part;
-      }
-
-      else if (part?.text) {
-        text += part.text;
-      }
     }
+
   }
 
-  return text;
+  catch(error) {
+
+    console.error(error);
+
+
+    status.textContent =
+      "Không kết nối được API";
+
+    status.style.color =
+      "orange";
+
+
+    dot.style.background =
+      "orange";
+
+
+    players.textContent =
+      "⚠️ Không lấy được trạng thái";
+
+
+    version.textContent =
+      "";
+
+  }
+
 }
+
+
+checkServer();
+
+
+setInterval(
+  checkServer,
+  60000
+);
+
+</script>
+
+
+</body>
+
+</html>
